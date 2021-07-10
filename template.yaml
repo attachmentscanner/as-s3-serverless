@@ -1,0 +1,74 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description:
+  Attachment Scanner S3 Serverless.
+  Automatically scans the provided S3 bucket for viruses and malware whenever a
+  file is uploaded (s3:ObjectCreated:*)
+
+Metadata:
+  AWS::ServerlessRepo::Application:
+    Name: attachment-scanner-s3-serverless
+    Description:
+      Automatically scans the provided S3 bucket for viruses and malware whenever
+      a file is uploaded (s3:ObjectCreated:*)
+    Author: AttachmentScanner
+    SpdxLicenseId: MIT
+    LicenseUrl: LICENSE.md
+    ReadmeUrl: installation.md
+    Labels:
+      - antivirus
+      - malware
+      - attachment-scanner
+      - s3
+      - protection
+      - security
+    HomePageUrl: https://www.attachmentscanner.com/as-s3-serverless
+    SemanticVersion: 0.0.1
+    SourceCodeUrl: https://github.com/attachmentscanner/as-s3-serverless
+
+Parameters:
+  AppBucketName:
+    Type: String
+    Description: "REQUIRED: Unique S3 bucket name to use for the app."
+  AttachmentScannerAPIToken:
+    Type: String
+    Description: >-
+      REQUIRED: Your AttachmentScanner API Token, obtained from www.attachmentscanner.com
+  AttachmentScannerAction:
+    Type: String
+    Description: >-
+      The action to take if a scan result is `found`. Options are `LOG`, `DELETE`.
+    Default: LOG
+    AllowedValues:
+      - LOG
+      - QUARANTINE
+      - TAG
+      - DELETE
+
+Resources:
+  S3ScanFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/s3-scanner.s3AttachmentScannerHandler
+      Runtime: nodejs14.x
+      MemorySize: 128
+      Timeout: 35
+      Policies:
+        S3FullAccessPolicy:
+          BucketName: !Ref AppBucketName
+      Environment:
+        Variables:
+          AS_ENDPOINT: !Ref AttachmentScannerAPIToken
+          AS_TOKEN: !Ref AttachmentScannerAPIToken
+          AS_ACTION: !Ref AttachmentScannerAction
+      Events:
+        S3NewObjectEvent:
+          Type: S3
+          Properties:
+            Bucket: !Ref AppBucket
+            Events: s3:ObjectCreated:*
+
+  AppBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Ref AppBucketName

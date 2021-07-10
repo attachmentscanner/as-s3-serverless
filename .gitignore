@@ -1,0 +1,11 @@
+.aws-sam
+node_modules
+
+# Keep the config out of source control as this may be shared
+samconfig.toml
+
+# Ignore VSCode files for now
+.devcontainer
+
+# The packaged template file
+packaged.yaml
