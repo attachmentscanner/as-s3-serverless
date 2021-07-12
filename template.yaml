@@ -29,7 +29,10 @@ Metadata:
 Parameters:
   AppBucketName:
     Type: String
-    Description: "REQUIRED: Unique S3 bucket name to use for the app."
+    Description: >-
+      The name of the S3 Bucket to add the event to.
+      A scan will be created whenever an object is created in the bucket.
+      Leave blank if you will connect the event yourself.
   AttachmentScannerAPIToken:
     Type: String
     Description: >-
@@ -50,7 +53,6 @@ Parameters:
     Default: LOG
     AllowedValues:
       - LOG
-      - QUARANTINE
       - TAG
       - DELETE
 
@@ -71,14 +73,49 @@ Resources:
           AS_TOKEN: !Ref AttachmentScannerAPIToken
           AS_ACTION: !Ref AttachmentScannerAction
           AS_EXPIRY: 120
-      Events:
-        S3NewObjectEvent:
-          Type: S3
-          Properties:
-            Bucket: !Ref AppBucket
-            Events: s3:ObjectCreated:*
+      # Events:
+      #   S3NewObjectEvent:
+      #     Type: S3
+      #     Properties:
+      #       Bucket: !Ref AppBucket
+      #       Events: s3:ObjectCreated:*
 
-  AppBucket:
-    Type: AWS::S3::Bucket
+  SetupEventFunction:
+    Type: AWS::Serverless::Function
     Properties:
-      BucketName: !Ref AppBucketName
+      Handler: src/handlers/setup.setupEventHandler
+      Runtime: nodejs14.x
+      MemorySize: 128
+      Timeout: 35
+      Policies:
+        - Version: 2012-10-17
+          Statement:
+            - Effect: Allow
+              Action:
+                - 's3:GetBucketNotification'
+                - 's3:PutBucketNotification'
+              Resource: !Sub 'arn:aws:s3:::${AppBucketName}'
+
+  LambdaInvokePermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref S3ScanFunction
+      Principal: s3.amazonaws.com
+      SourceAccount: !Ref AWS::AccountId
+      # SourceArn: !Sub 'arn:aws:s3:::${AppBucketName}'
+
+  AddEventTrigger:
+    # Type: AWS::CloudFormation::CustomResource
+    Type: Custom::CreateNotificationEventCustomResource
+    Properties:
+      ServiceToken: !GetAtt SetupEventFunction.Arn
+      LambdaArn: !GetAtt S3ScanFunction.Arn
+      Bucket: !Ref AppBucketName
+      Stackname: !Ref AWS::StackName
+
+  # Don't create the bucket for now
+  # AppBucket:
+  #   Type: AWS::S3::Bucket
+  #   Properties:
+  #     BucketName: !Ref AppBucketName

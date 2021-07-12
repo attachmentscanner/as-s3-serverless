@@ -8,7 +8,8 @@ Serverless Application Repository.
 1. Head to www.attachmentscanner.com and get an API key to use.
 2. Install the application (https://console.aws.amazon.com/serverlessrepo#/available-applications)
     * Add your API token (`AttachmentScannerAPIToken`)
-    * Add the name of your S3 Bucket (`AppBucketName`)
+    * Add the name of your S3 Bucket (`AppBucketName`),
+        the bucket must be in the same region as the lambda function.
     * Select the desired action to take if malware is found (`AttachmentScannerAction`)
         (see actions below).
 

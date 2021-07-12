@@ -1,0 +1,15 @@
+{
+  "RequestType": "Delete",
+  "ServiceToken": "arn:aws:lambda:us-east-1:100000000001:function:as-s3-test-SetupEventFunction-pYi1zyJkter3",
+  "ResponseURL": "https://cloudformation-custom-resource-response-useast1.s3.amazonaws.com/arn%3Aaws%3Acloudformation%3Aus-east-1%3A100000000001%3Astack/as-s3-test/f90e9020-dd77-11eb-ac1d-0a9888c17b59%7CAddEventTrigger%7Cc7b17370-6a19-4b9e-bcef-a0bf54d16829?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20210711T092257Z&X-Amz-SignedHeaders=host&X-Amz-Expires=7200&X-Amz-Credential=AKIA6L7Q4OWT5RZXSXPW%2F20210711%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=6e0432782d8d59e810c6d10c7e957b43ab94ecd8b9eb391559510e57e82ee1c9",
+  "StackId": "arn:aws:cloudformation:us-east-1:100000000001:stack/as-s3-test/f90e9020-dd77-11eb-ac1d-0a9888c17b59",
+  "RequestId": "c7b17370-6a19-4b9e-bcef-a0bf54d16829",
+  "LogicalResourceId": "AddEventTrigger",
+  "PhysicalResourceId": "as-s3-test-AddEventTrigger-9MDT19FGAUYD",
+  "ResourceType": "Custom::CreateNotificationEventCustomResource",
+  "ResourceProperties": {
+      "ServiceToken": "arn:aws:lambda:us-east-1:100000000001:function:as-s3-test-SetupEventFunction-pYi1zyJkter3",
+      "Bucket": "as-s3-test",
+      "LambdaArn": "arn:aws:lambda:us-east-1:100000000001:function:as-s3-test-S3ScanFunction-tpi17F7aIE4z"
+  }
+}

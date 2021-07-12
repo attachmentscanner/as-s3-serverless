@@ -1,0 +1,14 @@
+{
+  "RequestType": "Create",
+  "ServiceToken": "arn:aws:lambda:us-east-1:100000000001:function:as-s3-test-SetupEventFunction-feECAhAUzUcQ",
+  "ResponseURL": "https://cloudformation-custom-resource-response-useast1.s3.amazonaws.com/arn%3Aaws%3Acloudformation%3Aus-east-1%3A100000000001%3Astack/as-s3-test/f90e9020-dd77-11eb-ac1d-0a9888c17b59%7CAddEventTrigger%7C020563fc-c104-47c9-a16a-5262e4ad3043?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20210710T150216Z&X-Amz-SignedHeaders=host&X-Amz-Expires=7200&X-Amz-Credential=AKIA6L7Q4OWT5RZXSXPW%2F20210710%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=d863aaea5df193d879630389216cfda492b1973787b9a5d50a340703b10a9c71",
+  "StackId": "arn:aws:cloudformation:us-east-1:100000000001:stack/as-s3-test/f90e9020-dd77-11eb-ac1d-0a9888c17b59",
+  "RequestId": "020563fc-c104-47c9-a16a-5262e4ad3043",
+  "LogicalResourceId": "AddEventTrigger",
+  "ResourceType": "Custom::CreateNotificationEventCustomResource",
+  "ResourceProperties": {
+      "ServiceToken": "arn:aws:lambda:us-east-1:100000000001:function:as-s3-test-SetupEventFunction-feECAhAUzUcQ",
+      "Bucket": "as-s3-test",
+      "LambdaArn": "arn:aws:lambda:us-east-1:100000000001:function:as-s3-test-S3ScanFunction-tpi17F7aIE4z"
+  }
+}
