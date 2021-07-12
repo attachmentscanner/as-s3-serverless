@@ -9,3 +9,7 @@ samconfig.toml
 
 # The packaged template file
 packaged.yaml
+
+# Ignore local docs
+default.md
+publishing.md

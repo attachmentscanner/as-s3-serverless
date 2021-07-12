@@ -13,5 +13,9 @@
   },
   "scripts": {
     "test": "jest"
-  }
+  },
+  "files": [
+    "installation.md",
+    "/src/**/*"
+  ]
 }
