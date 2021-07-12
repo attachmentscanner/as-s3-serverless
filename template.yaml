@@ -34,6 +34,15 @@ Parameters:
     Type: String
     Description: >-
       REQUIRED: Your AttachmentScanner API Token, obtained from www.attachmentscanner.com
+  AttachmentScannerHost:
+    Type: String
+    Default: us-east-1.attachmentscanner.com
+    Description: >-
+      The HOST to send AttachmentScanner requests to.
+    AllowedValues:
+      - us-east-1.attachmentscanner.com
+      - eu-west-1.attachmentscanner.com
+      - ap-southeast-2.attachmentscanner.com
   AttachmentScannerAction:
     Type: String
     Description: >-
@@ -58,7 +67,7 @@ Resources:
           BucketName: !Ref AppBucketName
       Environment:
         Variables:
-          AS_ENDPOINT: !Ref AttachmentScannerAPIToken
+          AS_HOST: !Ref AttachmentScannerHost
           AS_TOKEN: !Ref AttachmentScannerAPIToken
           AS_ACTION: !Ref AttachmentScannerAction
           AS_EXPIRY: 120

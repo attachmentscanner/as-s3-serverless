@@ -27,12 +27,13 @@ const handleRecord = async (record) => {
 
   console.debug('The URL is', url);
 
-  const host = process.env.AS_SCAN_URL || "https://us-east-1.attachmentscanner.com/v0.1/scans";
-  const res = await axios.post(host,
+  const host = process.env.AS_SCAN_URL || "us-east-1.attachmentscanner.com";
+  const scanURL = `https://${host}/v0.1/scans`;
+  const res = await axios.post(scanURL,
     { url: url }, {
-      headers: {
-        Authorization: `Bearer ${process.env.AS_TOKEN}`
-      }
+    headers: {
+      Authorization: `Bearer ${process.env.AS_TOKEN}`
+    }
   });
 
   console.log(`Status: ${res.status}`);
