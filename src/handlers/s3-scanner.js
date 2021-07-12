@@ -21,7 +21,8 @@ exports.s3AttachmentScannerHandler = async (event, context) => {
 const handleRecord = async (record) => {
   const bucket = record.s3.bucket.name;
   const key = record.s3.object.key;
-  const params = { Bucket: bucket, Key: key, Expires: 60 };
+  const expires = parseInt(process.env.AS_EXPIRY || 120);
+  const params = { Bucket: bucket, Key: key, Expires: expires };
   const url = await s3.getSignedUrlPromise('getObject', params);
 
   console.debug('The URL is', url);

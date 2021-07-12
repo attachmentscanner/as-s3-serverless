@@ -61,6 +61,7 @@ Resources:
           AS_ENDPOINT: !Ref AttachmentScannerAPIToken
           AS_TOKEN: !Ref AttachmentScannerAPIToken
           AS_ACTION: !Ref AttachmentScannerAction
+          AS_EXPIRY: 120
       Events:
         S3NewObjectEvent:
           Type: S3
