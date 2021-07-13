@@ -1,0 +1,31 @@
+name: release
+on:
+  push:
+    tags:
+      - '*'
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v2
+      - run: echo "${GITHUB_REF}"
+      - run: echo "::set-output name=VERSION::${GITHUB_REF#refs/tags/v}"
+        id: get_version
+      - uses: actions/setup-python@v2
+        with:
+          python-version: "3.8"
+      - uses: aws-actions/setup-sam@v1
+      - uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+      - run: sam build --use-container
+      - run: |
+          sam package \
+            --s3-bucket as-s3-lambda \
+            --s3-prefix package/${{ steps.get_version.outputs.VERSION }} \
+            --output-template-file packaged.yaml
+      - run: |
+          sam publish -t ./packaged.yaml --semantic-version ${{ steps.get_version.outputs.VERSION }}
